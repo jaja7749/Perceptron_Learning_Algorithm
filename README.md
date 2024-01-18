@@ -31,3 +31,54 @@ Here's a step-by-step description of the Perceptron Learning Algorithm:
    - Repeat steps 3 and 4 for each training example until the algorithm converges, meaning that the weights and bias no longer change significantly, or a predefined number of iterations is reached.
 
 The Perceptron Learning Algorithm works well for linearly separable data, where it is possible to draw a straight line (or hyperplane in higher dimensions) to separate the two classes. However, it may not converge for data that is not linearly separable. In such cases, more advanced algorithms like the multilayer perceptron (MLP) or support vector machines (SVM) may be used.
+
+# Perceptron Learning Algorithm on Different Distribution Data
+we create the dataset from sklearn:
+```ruby
+from sklearn.datasets import make_blobs, make_circles, make_classification, make_moons, make_gaussian_quantiles
+
+samples = 200
+datasets = [
+    make_blobs(n_samples=samples, centers=2, n_features=2, random_state=1),
+    make_blobs(n_samples=samples, centers=2, n_features=2, random_state=6),
+    make_moons(n_samples=samples, noise=0.15, random_state=0),
+    make_circles(n_samples=samples, noise=0.15, factor=0.3, random_state=0),
+    make_gaussian_quantiles(n_samples=samples, n_features=2, n_classes=2, random_state=0),
+    make_classification(n_samples=samples, n_features=2, random_state=1, n_redundant=0, n_informative=1, n_clusters_per_class=1),
+    make_classification(n_samples=samples, n_features=2, random_state=1, n_redundant=0, n_informative=2, n_clusters_per_class=1),
+    make_classification(n_samples=samples, n_features=2, random_state=1, n_redundant=0, n_informative=2),
+]
+```
+<img src="https://github.com/jaja7749/Perceptron_Learning_Algorithm/blob/main/images/different%20distribution%201.png" width="720">
+
+First of all, we build PLA class to input $`X`$ and $`y`$ (label):
+```ruby
+class PLA:
+    def __init__(self, X, label, random=None):
+        self.X = X
+        self.label = label
+        np.random.seed(random)
+        w = np.random.random(2)
+        self.w = w
+```
+Then, we def sign function:
+```ruby
+    def sign(self, x):
+        if x >= 0:
+            return 1
+        else:
+            return -1 # or 0
+```
+Now, we can train our model:
+```ruby
+    def train(self, epoch=100, learning_rate = 0.1):
+        for iteration in range(epoch):
+            for i in range(len(self.X)):
+                if (self.label[i]*(np.dot(self.w.T, self.X[i]))) <= 0:
+                    self.w += learning_rate*(self.label[i]*self.X[i])
+```
+Finally, let's check our results:
+<img src="https://github.com/jaja7749/Perceptron_Learning_Algorithm/blob/main/images/PLA%20result.png" width="720">
+
+# Summary
+The PLA can apply on the data is separable because PLA only have one perceptron. One perceptron can solve linear problem. However if the data is not separable, the model can not classified it. To solve the non_linear problem, people use more perceptrons to classified the data. That is as everyone know "Neural Network" now.
