@@ -78,6 +78,7 @@ Now, we can train our model:
                     self.w += learning_rate*(self.label[i]*self.X[i])
 ```
 Finally, let's check our results:
+
 <img src="https://github.com/jaja7749/Perceptron_Learning_Algorithm/blob/main/images/PLA%20result.png" width="720">
 
 # Summary
